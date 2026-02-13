@@ -113,7 +113,7 @@ def softmax_regression_epoch(X, y, theta, lr = 0.1, batch=100):
         Z = Z / np.sum(Z, axis=1, keepdims=True)
         Y = np.zeros((batch, y.max() + 1))
         Y[np.arange(batch), yy] = 1
-        grad = x.T @ (Z - Y) / batch # 梯度的数学公式
+        grad = x.T @ (Z - Y) / batch
         assert(grad.shape == theta.shape)
         theta -= lr * grad
     ### END YOUR CODE
