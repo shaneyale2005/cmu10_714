@@ -48,7 +48,7 @@ def parse_mnist(image_filename, label_filename):
                 for MNIST will contain the values 0-9.
     """
     ### BEGIN YOUR CODE
-    # 注意mnist数据集的格式
+    # 注意 mnist 数据集的格式
     with gzip.open(image_filename, "rb") as img_file:
         magic_num, img_num, row, col = struct.unpack(">4i", img_file.read(16))
         assert(magic_num == 2051)
@@ -82,7 +82,6 @@ def softmax_loss(Z, y):
         Average softmax loss over the sample.
     """
     ### BEGIN YOUR CODE
-    # 此处参考了大神的代码，这种是数学推导的实现
     return (np.sum(np.log(np.sum(np.exp(Z), axis=1))) - np.sum(Z[np.arange(y.size), y]))/y.size
     ### END YOUR CODE
 
@@ -143,24 +142,37 @@ def nn_epoch(X, y, W1, W2, lr = 0.1, batch=100):
         None
     """
     ### BEGIN YOUR CODE
-    iterations = (y.size + batch - 1) // batch
-    for i in range(iterations):
-        x = X[i * batch : (i + 1) * batch : ]
-        yy = y[i * batch : (i + 1) * batch ]
-        z1 = x @ W1
-        z1[z1 < 0] = 0
-        G2 = np.exp(z1 @ W2)
-        G2 = G2 / np.sum(G2, axis = 1, keepdims=True)
-        Y = np.zeros(batch, y.max() + 1)
-        Y[np.arange(batch), yy] = 1
-        G2 -= Y # softmax输出的概率分布
-        G1 = np.zeros_like(z1)
-        G1[z1 > 0] = 1 # 构建Relu函数的导数
-        G1 = G1 * (G2 @ W2.T) # 构建Relu函数的导数
-        grad1 = X.T @ G1 / batch
-        grad2 = z1.T @ G2 / batch
-        W1 -= lr * grad1
-        W2 -= lr * grad2
+    m = X.shape[0]
+    num_batches = (m + batch - 1) // batch
+    num_classes = W2.shape[1]
+    
+    for i in range(num_batches):
+        start = i * batch
+        end = min((i + 1) * batch, m)
+        X_batch = X[start:end]
+        y_batch = y[start:end]
+        batch_size = X_batch.shape[0]
+
+        # Forward
+        Z1 = X_batch @ W1
+        Z1 = np.maximum(Z1, 0)                     # ReLU
+        logits = Z1 @ W2
+
+        # Softmax + gradient G2
+        exp_logits = np.exp(logits)
+        probs = exp_logits / np.sum(exp_logits, axis=1, keepdims=True)
+        Iy = np.zeros((batch_size, num_classes), dtype=np.float32)
+        Iy[np.arange(batch_size), y_batch] = 1.0
+        G2 = probs - Iy
+
+        # Backward
+        G1 = (G2 @ W2.T) * (Z1 > 0)                # (b, d)
+        dW2 = (Z1.T @ G2) / batch_size
+        dW1 = (X_batch.T @ G1) / batch_size
+
+        # Update
+        W2 -= lr * dW2
+        W1 -= lr * dW1
     ### END YOUR CODE
 
 

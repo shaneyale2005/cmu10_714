@@ -5,11 +5,10 @@
 
 namespace py = pybind11;
 
-// 这里是抄的大佬的代码
 void mat_mul(const float* X, const float* Y, float* Z, int m, int n, int k){
-    // X为m行n列的矩阵
-    // Y为n行k列的矩阵
-    // Z为m行k列的矩阵
+    // X 为 m 行 n 列的矩阵
+    // Y 为 n 行 k 列的矩阵
+    // Z 为 m 行 k 列的矩阵
     for (int i = 0; i < m; i++){
         for (int j = 0; j < k; j++){
             Z[i * k + j] = 0;
