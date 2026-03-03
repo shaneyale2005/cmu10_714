@@ -1,6 +1,8 @@
 # [CMU10-414/714](https://dlsyscourse.org/)
 
-This course explores the algorithms and implementation details behind modern deep learning frameworks. Students will build a full-featured deep learning library from scratch, gaining hands-on experience with both high-level modeling and low-level system optimization.
+This course explores the algorithms and implementation details behind modern deep learning frameworks.
+
+Students will build a full-featured deep learning library from scratch, gaining hands-on experience with both high-level modeling and low-level system optimization.
 
 ### Quick Links
 - [Lectures](https://dlsyscourse.org/lectures)
