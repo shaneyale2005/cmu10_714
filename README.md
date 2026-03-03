@@ -8,15 +8,6 @@ This course explores the algorithms and implementation details behind modern dee
 - [Staff](https://dlsyscourse.org/staff)
 - [Forum](https://edstem.org/)
 
-### Learning Objectives
-- Build a deep learning framework from scratch
-- Optimize operations for CPU/GPU
-- Implement core algorithms in C++/CUDA
-- Apply hardware acceleration techniques
-- Train modern architectures using your own framework
-- Analyze trade-offs in system design
-- Extend frameworks with custom features
-
 ### Assignments & Project
 - **HW0:** Background & softmax regression
 - **HW1:** Automatic differentiation
